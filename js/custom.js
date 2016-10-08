@@ -1,6 +1,5 @@
 $(document).ready(function(){$('video, audio').mediaelementplayer();});
 
-var video;
 
 window.onload = function() {
     var textTranscript = document.getElementById("text-transcript");
