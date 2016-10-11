@@ -4,6 +4,14 @@
     box-sizing: border-box;
 }
 
+video::-webkit-media-controls {
+  display:none !important;
+}
+
+video::-webkit-media-controls-enclosure {
+	display:none !important;
+}
+
 p {
     margin: .75em 1.5em;
 }
@@ -14,137 +22,253 @@ p {
 	margin: 0 auto;
 }
 
+/* -- CONTROLS-- */
+
 #video-container {
 	padding-bottom: 50px;
 }
 
-#text-transcript {
-	line-height: 1.5em;
-	font-size: 1.2em;
-	cursor: pointer;
-}
 
-
-.mejs-container .mejs-controls {
-	position: absolute;
+#controls-container {
+	position: relative;
+	bottom: 54px;
 	height: 50px;
-	background: none;
+	width: 100%;
+	margin-bottom: 0;
 }
 
-
-.mejs-controls .mejs-time-rail .mejs-time-current,
-.mejs-controls .mejs-time-rail .mejs-time-loaded,
-.mejs-controls .mejs-time-rail .mejs-time-slider {
-	height: 4px;
-}
-
-.mejs-controls .mejs-time-rail .mejs-time-loaded,
-.mejs-controls .mejs-time-rail .mejs-time-slider {
-	width: 99% !important;
-}
-
-.mejs-controls .mejs-time-rail .mejs-time-current {
-	background: #ef7510;
-}
-
-.mejs-controls .mejs-time-rail .mejs-time-loaded {
-	background: white;
-	width: 100% !important;
-	opacity: 0.4;
-}
-
-.mejs-controls .mejs-time-rail {
-	position: absolute;
+#video-controls {
+	display: inline-flex;
+	position: relative;
 	left: 0;
-	top: -15px;
-	width: 100% !important;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	height: 40px;
+	margin: auto;
+	margin-top: 4px;
+	color: white;
+	background: transparent;
+	vertical-align: baseline;
+}
+
+#play-pause-btn,
+#mute,
+input#volume-bar,
+#full-screen,
+#times {
+	border: none;
+	vertical-align: baseline;
+	height: 100%;
+	background: transparent;
+	padding: 6px;
+	margin-top: 6px;
+	font-size: .85em;
+}
+
+#full-screen {
+	order: 6;
+}
+
+#play-pause-btn,
+#times {
+	margin-right: auto;
+}
+
+#play-pause-btn img {
+	height: 24px;
+}
+
+#times {
+	flex-grow: 2;
+	margin-top: 11px;
+}
+
+/* ---- Volume Bar ----- */
+#volume-bar {
+	margin-right: 6px;
+	height: 24px;
+}
+
+/* Hide default volume*/
+ input[type=range] {
+  -webkit-appearance: none;
+  width: 20%;  /* Firefox.*/
+  background: transparent; /* Chrome */
+}
+
+input[type=range]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	width: 15px;
+	background-color: white;
+	height: 15px;
+	border-radius: 30px;
+	margin-top: -6px;
+}
+
+input[type=range]::-moz-range-thumb {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	width: 15px;
+	background-color: white;
+	height: 15px;
+	border-radius: 30px;
+	margin-top: -6px;
+
+}
+
+input[type=range]::-ms-thumb {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	background-color: white;
+	width: 15px;
+	height: 15px;
+	border-radius: 30px;
+	margin-top: -1px;
+}
+
+/* ----- Volume Track ----- */
+
+input[type=range]::-webkit-slider-runnable-track {
+	height: 2px;
+	cursor: pointer;
+	background: white;
+	border-radius: 2px;
+}
+
+input[type=range]::-moz-range-track {
+	height: 2px;
+	cursor: pointer;
+	background: white;
+	border-radius: 2px;
+}
+
+input[type=range]::-ms-track {
+	height: 2px;
+	cursor: pointer;
+	background: white;
+	border-radius: 2px;
+}
+
+#full-screen,
+#mute,
+#volume-bar {
+	align-self: flex-end;
+}
+
+input[type="button"]:focus {
+  outline: none; 
 }
 
 
-.mejs-controls .mejs-play button {
-	    background: transparent url('../icons/play-icon.png') no-repeat;
-	    background-size: 70%;
-	    width: 100%;
-	    height: 100%;
+/* ----- Progress Bars ----- */
+
+#progress-bar {
+	position: relative;
+	left: 0;
+	right: 0;
+	bottom: -10px;
+	margin: auto;
+	width: 100%;
+	border: 0;
+	outline: 0;
 }
 
-.mejs-controls .mejs-pause button {
-	    background: transparent url('../icons/pause-icon.png') no-repeat;
-	    background-size: 65%;
-	    width: 100%;
-	    height: 100%;
+#seek-slider,
+#buffer-bar,
+#buffered-amount {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	position: absolute;
+	width: 100%;
+	height: 5px;
+	bottom: 10px;
+	border-radius: 5px;
 }
 
-.mejs-container .mejs-controls .mejs-playpause-button {
-		position: absolute;
-		left: 12px;
-	    width: 35px;
-	    height: 35px;
-	    margin-top: 2px;
+/* -- PLAY PROGRESS BAR -- */
+
+/* Progress Bar Static */
+#seek-slider::-webkit-progress-bar {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	position: absolute;
+	height: 5px;
+	width: 100%;
+	background: transparent;
+	border: 0;
 }
 
-.mejs-controls .mejs-fullscreen-button button {
-	    background: transparent url('../icons/fullscreen-icon.png') no-repeat;
-	    background-position: right;
-	    background-size: 95%;
-	    width: 100%;
-	    height: 100%;
-	    margin: 0;
+/* Firefox */
+#seek-slider {
+	position: absolute;
+	height: 5px;
+	width: 100%;
+	background: transparent;
+	border: 0;
 }
 
-.mejs-container .mejs-controls .mejs-fullscreen-button{
-		position: absolute;
-		right: 20px;
-	    width: 30px;
-	    height: 30px;
-	    margin-top: 9px;
+/* Chrome */
+#seek-slider::-webkit-progress-value {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	position: absolute;
+	height: 5px;
+	width: 100%;
+	background-color: orange;
+	opacity: 1;
+	border-radius: 5px;
+	z-index: 100;
 }
 
-.mejs-controls .mejs-mute button {
-		background: transparent url('../icons/volume-on-icon.png') no-repeat;
-	    background-position: right;
-	    background-size: 100%;
-	    width: 100%;
-	    height: 100%;
-	    margin: 0;
+/* Value -- Firefox */
+#seek-slider::-moz-progress-bar {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	position: absolute;
+	height: 5px;
+	width: 100%;
+	background-color: orange;
+	opacity: 1;
+	border-radius: 5px;
+	z-index: 100;
 }
 
-.mejs-controls .mejs-unmute button {
-		background: transparent url('../icons/volume-off-icon.png') no-repeat;
-	    background-position: right;
-	    background-size: 100%;
-	    width: 100%;
-	    height: 100%;
-	    margin: 0;
+/* Value -- Microsoft Edge */
+#seek-slider::-ms-fill {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	position: absolute;
+	height: 5px;
+	width: 100%;
+	opacity: 1;
+	border-radius: 5px;
+	background-color: orange;
+	z-index: 100;
 }
 
-.mejs-container .mejs-controls .mejs-volume-button{
-		position: absolute;
-	    right: 60px;
-	    width: 30px;
-	    height: 30px;
-	    margin-top: 9px;
+/* -- BUFFER BAR -- */
+
+/* Static */
+#buffer-bar {
+	background-color: dimgrey;
+	opacity: .2;
 }
 
-.mejs-container .mejs-controls .mejs-volume-button .mejs-volume-slider {
-	top: -129px;
+/* Value */
+#buffered-amount {
+	position: absolute;
+	width: 0;
+	border-radius: 5px;
+	background-color: black;
+	z-index: 0;
+	opacity: .4;
 }
 
-.mejs-container .mejs-controls .mejs-time {
-	font-size: 0.95em;
-	padding: 17px 0px 0 12px;
-}
 
-.mejs-container .mejs-controls .mejs-time .mejs-currenttime {
-	padding-left: 45px;
-}
 
-.mejs-container .mejs-controls .mejs-time .mejs-currenttime:after {
-	padding-left: 10px;
-	content: " / "
-}
-
-    /*Colors for transcript highlights*/
+ /*Colors for transcript highlights*/
     .active-cue { 
         color: #ed8004;
         transition: all .6s ease-in-out;
@@ -154,31 +278,52 @@ p {
         color: #645f5f;
         transition: all .6s ease-in-out;
     }
+
+	#text-transcript {
+		line-height: 1.5em;
+		font-size: 1.2em;
+		cursor: pointer;
+	}
     
-    .mejs-container .mejs-controls .mejs-playpause-button,
-    .mejs-container .mejs-controls .mejs-time,
-    .mejs-container .mejs-controls .mejs-volume-button,
-    .mejs-container .mejs-controls .mejs-fullscreen-button {
+
+
+   /* -- HIDE AND UNHIDE CONTROLS -- */
+    #play-pause-btn,
+    #times,
+    #mute,
+    #volume-bar,
+    #full-screen {
     	display: none;
     }
 
-    .mejs-container .mejs-controls {
-    	height: 5px;
-   		transition: all .5s ease .15s;
-    }
-
-    .mejs-container:hover .mejs-controls .mejs-playpause-button,
-    .mejs-container:hover .mejs-controls .mejs-time,
-    .mejs-container:hover .mejs-controls .mejs-volume-button,
-    .mejs-container:hover .mejs-controls .mejs-fullscreen-button {
-    	display: inline;
-    }
-
-    .mejs-container:hover .mejs-controls {
-    	height: 50px;
+    #video-controls,
+    #controls-container {
+    	bottom: 10px;
     	transition: all .5s ease .15s;
     }
 
+     #video-container:hover #controls-container {
+    	height: 50px;
+    	bottom: 54px;
+    	transition: all .5s ease .15s;
+    }
 
+     #video-container:hover #video-controls{
+    	height: 40px;
+    	bottom: 0px;
+    }
+
+    #video-container:hover #play-pause-btn,
+    #video-container:hover #times,
+    #video-container:hover #mute,
+    #video-container:hover #volume-bar,
+    #video-container:hover #full-screen {
+    	display: inline;
+    }
+
+    #video-container {
+    	padding: 0;
+    }
+   
 
 
