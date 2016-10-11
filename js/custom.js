@@ -1,8 +1,139 @@
-$(document).ready(function(){$('video, audio').mediaelementplayer();});
 
 
-window.onload = function() {
-    var textTranscript = document.getElementById("text-transcript");
+/* ----- VARIABLES ----- */
+
+var vid = document.getElementById("video");
+var videoBox = document.getElementById("video-container");
+var playButton = document.getElementById("play-pause-btn");
+var progressBar = document.getElementById("progress-bar");
+var seekBar = document.getElementById("seek-slider");
+var bufferAmount = document.getElementById("buffered-amount");
+var currentTimeText = document.getElementById("current-time");
+var durationTimeText = document.getElementById("duration-time");
+var muteButton = document.getElementById("mute");
+var textTranscript = document.getElementById("text-transcript");
+var volumeBar = document.getElementById("volume-bar");
+var fullScreenButton = document.getElementById("full-screen");
+var controls = document.getElementById("video-controls");
+
+
+
+function initializeVideo() {
+  /* Set event listeners */
+  playButton.addEventListener("click", playPause, false);
+  vid.addEventListener("mouseup", playPause, false);
+  seekBar.addEventListener("click", vidSeek, false);
+  vid.addEventListener("timeupdate", seekTimeUpdate, false);
+  vid.addEventListener("timeupdate", bufferUpdate, false);
+  volumeBar.addEventListener("change", volumeControl, false);
+  volumeBar.addEventListener("mouseup", volumeControl, false);
+  muteButton.addEventListener("click", mute, false);
+  fullScreenButton.addEventListener("click", screenSize, false);
+}
+
+/* Initialize player on load */
+window.onload = initializeVideo;
+
+
+/* ----- PLAY/PAUSE BUTTONS ----- */
+function playPause() {
+  if (vid.paused === true) {
+    vid.play();
+    playButton.innerHTML = "<img src='icons/pause-icon.png' alt='pause'>";
+  }
+  else {
+    vid.pause();
+    playButton.innerHTML = "<img src='icons/play-icon.png' alt='play'>";
+  }
+}
+
+/* ----- VOLUME CONTROLS ----- */
+function volumeControl() {
+  vid.volume = volumeBar.value;
+  if (vid.volume === 0) {
+    mute();
+  }
+  else if (vid.volume > 0) {
+    vid.muted = false;
+  }
+}
+
+function mute() {
+  if (vid.muted === false) {
+    // Mute video
+    vid.muted = true;
+    // Update button
+    muteButton.innerHTML = "<img src='icons/volume-off-icon.png' alt='volume-off-icon'>";
+    // Update volume bar
+    volumeBar.value = 0;
+
+  } else {
+    // Unmute video
+    vid.muted = false;
+    // Update button
+    muteButton.innerHTML = "<img src='icons/volume-on-icon.png' alt='volume-on-icon'>";
+    //Set volume back to previous
+    volumeBar.value = vid.volume;
+  }
+}
+
+
+/* ----- FULLSCREEN BUTTON ----- */
+function screenSize() {
+  vid.removeAttribute("controls");
+  if (vid.requestFullscreen) {
+    videoBox.requestFullscreen();
+  } else if (vid.mozRequestFullScreen) {
+    vid.mozRequestFullScreen(); // Firefox
+  } else if (vid.webkitRequestFullScreen) {
+    vid.webkitRequestFullscreen(); // Chrome and Safari
+  }
+}
+
+
+/* ----- PROGRESS BAR & TIME DISPLAY ----- */
+function vidSeek(event) {
+  //Calculate new time based on click
+  var seekUpdate = event.offsetX / this.offsetWidth;
+  vid.currentTime = seekUpdate * vid.duration;
+  seekBar.value = seekUpdate / 100;
+}
+
+function seekTimeUpdate() {
+  var newTime = vid.currentTime * (100 / vid.duration);
+  seekBar.value = newTime;
+
+  // Display current time / duration
+  var currentMinutes = Math.floor(vid.currentTime / 60);
+  var currentSeconds = Math.floor(vid.currentTime - currentMinutes * 60);
+
+  if (currentSeconds < 10) {
+    currentSeconds = "0"+currentSeconds;
+  }
+
+  var durationMinutes = Math.floor(vid.duration / 60);
+  var durationSeconds = Math.floor(vid.duration - durationMinutes * 60);
+
+  if (durationSeconds < 10) {
+    durationSeconds = "0"+durationSeconds;
+  }
+
+  currentTimeText.innerHTML = currentMinutes + ":" + currentSeconds;
+  durationTimeText.innerHTML = durationMinutes + ":" + durationSeconds;
+}
+
+/* ---- BUFFER PROGRESS BAR ----- */
+
+function bufferUpdate() {
+  var bufferedEnd = vid.buffered.end(vid.buffered.length - 1);
+  var bufferValue = ((bufferedEnd / vid.duration)*100) + "%";
+
+  if (vid.duration > 0) {
+    bufferAmount.style.width = bufferValue;
+  }
+}
+
+    
     
     //JSON for cue start/end times & text
     var syncData = [
@@ -55,5 +186,3 @@ window.onload = function() {
             for (var i = 0; i < sentences.length; i++) {
                 sentences[i].addEventListener("click", textJump); //Call textJump function
             }
-
-}; //End window.onload
